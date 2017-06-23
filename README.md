@@ -1,4 +1,4 @@
-# goosrelease [!Build Status](https://travis-ci.org/cobaugh/goosrelease.svg?branch=master)](https://travis-ci.org/cobaugh/goosrelease)
+# goosrelease [![Build Status](https://travis-ci.org/cobaugh/goosrelease.svg?branch=master)](https://travis-ci.org/cobaugh/goosrelease)
 
 A Go package to make reading in os-release files easy.
 
