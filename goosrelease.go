@@ -14,21 +14,6 @@ import (
 const EtcOsRelease string = "/etc/os-release"
 const UsrLibOsRelease string = "/usr/lib/os-release"
 
-type OsRelease struct {
-	NAME             string
-	VERSION          string
-	ID               string
-	ID_LIKE          string
-	VERSION_CODENAME string
-	VERSION_ID       string
-	PRETTY_NAME      string
-	ANSI_COLOR       string
-	CPE_NAME         string
-	BUILD_ID         string
-	VARIANT          string
-	VARIANT_ID       string
-}
-
 func Read(filename string) (osrelease map[string]string, err error) {
 	osrelease = make(map[string]string)
 	err = nil
