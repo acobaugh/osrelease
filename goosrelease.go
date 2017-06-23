@@ -95,12 +95,15 @@ func parseLine(line string) (key string, value string, err error) {
 		last := string(value[len(value)-1:])
 
 		if first == last && strings.ContainsAny(first, `"'`) {
-			value = strings.Trim(value, `"'`)
+			value = strings.TrimPrefix(value, `'`)
+			value = strings.TrimPrefix(value, `"`)
+			value = strings.TrimSuffix(value, `'`)
+			value = strings.TrimSuffix(value, `"`)
 		}
-		value = strings.Replace(value, `\"`, `"`, -1)
 	}
 
 	// expand anything else that could be escaped
+	value = strings.Replace(value, `\"`, `"`, -1)
 	value = strings.Replace(value, `\$`, `$`, -1)
 	value = strings.Replace(value, `\\`, `\`, -1)
 	value = strings.Replace(value, "\\`", "`", -1)
