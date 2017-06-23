@@ -61,6 +61,7 @@ func TestRead(t *testing.T) {
 			"VERSION":     "17\"",
 			"ID":          ",;: ",
 			"PRETTY_NAME": "$ ` \\ \"",
+			"ANSI_COLOR": "",
 		},
 	}
 
