@@ -57,10 +57,10 @@ func TestRead(t *testing.T) {
 		},
 		6: {
 			"NAME":        "dummy",
-			"DISTRIB_ID":  "foobar",
-			"VERSION":     "17",
+			"DISTRIB_ID":  "\"foobar",
+			"VERSION":     "17\"",
 			"ID":          ",;: ",
-			"PRETTY_NAME": "\\$ \\` \\ \"",
+			"PRETTY_NAME": "$ ` \\ \"",
 		},
 	}
 
