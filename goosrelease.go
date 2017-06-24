@@ -1,3 +1,6 @@
+// goosrelease is a go package to make reading the contents of os-release files easier
+// 
+// See https://www.freedesktop.org/software/systemd/man/os-release.html
 package goosrelease
 
 import (
