@@ -1,6 +1,7 @@
 package goosrelease
 
 import (
+	"fmt"
 	"strconv"
 	"testing"
 )
@@ -12,7 +13,7 @@ func TestReadNoFile(t *testing.T) {
 	}
 }
 
-func TestRead(t *testing.T) {
+func TestReadFile(t *testing.T) {
 	expectedResults := map[int]map[string]string{
 		1: {
 			"NAME":        "void",
@@ -78,4 +79,22 @@ func TestRead(t *testing.T) {
 			}
 		}
 	}
+}
+
+func ExampleRead() {
+	osrelease, err := Read()
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+	fmt.Printf("PRETTY_NAME = %v\n", osrelease["PRETTY_NAME"])
+}
+
+func ExampleReadFile() {
+	osrelease, err := ReadFile("/etc/os-release")
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+		return
+	}
+	fmt.Printf("PRETTY_NAME = %v\n", osrelease["PRETTY_NAME"])
 }
