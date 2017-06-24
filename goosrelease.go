@@ -1,7 +1,3 @@
-/*
- * For reference: https://www.freedesktop.org/software/systemd/man/os-release.html
- */
-
 package goosrelease
 
 import (
@@ -14,6 +10,8 @@ import (
 const EtcOsRelease string = "/etc/os-release"
 const UsrLibOsRelease string = "/usr/lib/os-release"
 
+// Read and return os-release, trying EtcOsRelease, followed by UsrLibOsRelease.
+// err will contain an error message if neither file exists or failed to parse
 func Read() (osrelease map[string]string, err error) {
 	osrelease, err = ReadFile(EtcOsRelease)
 	if err != nil {
@@ -22,6 +20,7 @@ func Read() (osrelease map[string]string, err error) {
 	return
 }
 
+// Similar to Read(), but takes the name of a file to load instead
 func ReadFile(filename string) (osrelease map[string]string, err error) {
 	osrelease = make(map[string]string)
 	err = nil
