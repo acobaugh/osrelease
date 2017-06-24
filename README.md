@@ -9,6 +9,8 @@ See https://www.freedesktop.org/software/systemd/man/os-release.html
 
 ## Usage
 
+See [godoc](https://godoc.org/github.com/cobaugh/goosrelease)
+
 ```golang
 package main
 
