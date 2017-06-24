@@ -14,11 +14,19 @@ import (
 const EtcOsRelease string = "/etc/os-release"
 const UsrLibOsRelease string = "/usr/lib/os-release"
 
-func Read(filename string) (osrelease map[string]string, err error) {
+func Read() (osrelease map[string]string, err error) {
+	osrelease, err = ReadFile(EtcOsRelease)
+	if err != nil {
+		osrelease, err = ReadFile(UsrLibOsRelease)
+	}
+	return
+}
+
+func ReadFile(filename string) (osrelease map[string]string, err error) {
 	osrelease = make(map[string]string)
 	err = nil
 
-	lines, err := readFile(filename)
+	lines, err := parseFile(filename)
 	if err != nil {
 		return
 	}
@@ -32,7 +40,7 @@ func Read(filename string) (osrelease map[string]string, err error) {
 	return
 }
 
-func readFile(filename string) (lines []string, err error) {
+func parseFile(filename string) (lines []string, err error) {
 	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err

@@ -6,7 +6,7 @@ import (
 )
 
 func TestReadNoFile(t *testing.T) {
-	_, err := Read("test/nosuchfile")
+	_, err := ReadFile("test/nosuchfile")
 	if err == nil {
 		t.Errorf("Read() on non-existant file returned nil, should not be nil")
 	}
@@ -61,13 +61,13 @@ func TestRead(t *testing.T) {
 			"VERSION":     "17\"",
 			"ID":          ",;: ",
 			"PRETTY_NAME": "$ ` \\ \"",
-			"ANSI_COLOR": "",
+			"ANSI_COLOR":  "",
 		},
 	}
 
 	for test := 1; test <= len(expectedResults); test++ {
 		filename := "test/os-release." + strconv.Itoa(test)
-		osrelease, err := Read(filename)
+		osrelease, err := ReadFile(filename)
 		if err != nil {
 			t.Fatalf("Error reading test file '%v': %v", filename, err)
 		} else {
