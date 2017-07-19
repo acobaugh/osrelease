@@ -1,4 +1,4 @@
-package goosrelease
+package osrelease
 
 import (
 	"fmt"
