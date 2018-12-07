@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func expectedResults() {
+func expectedResults() map[int]map[string]string {
 	return map[int]map[string]string{
 		1: {
 			"NAME":        "void",
@@ -69,14 +69,15 @@ func TestReadNoFile(t *testing.T) {
 }
 
 func TestReadFile(t *testing.T) {
+	results := expectedResults()
 
-	for test := 1; test <= len(expectedResults()); test++ {
+	for test := 1; test <= len(results); test++ {
 		filename := "test/os-release." + strconv.Itoa(test)
 		osrelease, err := ReadFile(filename)
 		if err != nil {
 			t.Fatalf("Error reading test file '%v': %v", filename, err)
 		} else {
-			for key, value := range expectedResults[test] {
+			for key, value := range results[test] {
 				if osrelease[key] != value {
 					t.Errorf("In file 'test/os-release.%v', Read() returned '%v' = '%v', should be '%v'", test, key, osrelease[key], value)
 				}
@@ -86,7 +87,9 @@ func TestReadFile(t *testing.T) {
 }
 
 func TestReadString(t *testing.T) {
-	for test := 1; test <= len(expectedResults()); test++ {
+	results := expectedResults()
+
+	for test := 1; test <= len(results); test++ {
 		filename := "test/os-release." + strconv.Itoa(test)
 		bytes, err := ioutil.ReadFile(filename)
 		if err != nil {
@@ -98,7 +101,7 @@ func TestReadString(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Error parsing content of '%v': %v", filename, err)
 		} else {
-			for key, value := range expectedResults[test] {
+			for key, value := range results[test] {
 				if osrelease[key] != value {
 					t.Errorf("In file 'test/os-release.%v', Read() returned '%v' = '%v', should be '%v'", test, key, osrelease[key], value)
 				}
