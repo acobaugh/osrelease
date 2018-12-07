@@ -1,10 +1,11 @@
 // osrelease is a go package to make reading the contents of os-release files easier
-// 
+//
 // See https://www.freedesktop.org/software/systemd/man/os-release.html
 package osrelease
 
 import (
 	"bufio"
+	"bytes"
 	"errors"
 	"os"
 	"strings"
@@ -42,6 +43,25 @@ func ReadFile(filename string) (osrelease map[string]string, err error) {
 	return
 }
 
+// ReadString is similar to Read(), but takes a string to load instead
+func ReadString(content string) (osrelease map[string]string, err error) {
+	osrelease = make(map[string]string)
+	err = nil
+
+	lines, err := parseString(content)
+	if err != nil {
+		return
+	}
+
+	for _, v := range lines {
+		key, value, err := parseLine(v)
+		if err == nil {
+			osrelease[key] = value
+		}
+	}
+	return
+}
+
 func parseFile(filename string) (lines []string, err error) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -54,6 +74,18 @@ func parseFile(filename string) (lines []string, err error) {
 		lines = append(lines, scanner.Text())
 	}
 	return lines, scanner.Err()
+}
+
+func parseString(content string) (lines []string, err error) {
+	in := bytes.NewBufferString(content)
+	reader := bufio.NewReader(in)
+	scanner := bufio.NewScanner(reader)
+
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines, scanner.Err()
+
 }
 
 func parseLine(line string) (key string, value string, err error) {

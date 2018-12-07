@@ -2,19 +2,13 @@ package osrelease
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strconv"
 	"testing"
 )
 
-func TestReadNoFile(t *testing.T) {
-	_, err := ReadFile("test/nosuchfile")
-	if err == nil {
-		t.Errorf("Read() on non-existant file returned nil, should not be nil")
-	}
-}
-
-func TestReadFile(t *testing.T) {
-	expectedResults := map[int]map[string]string{
+func expectedResults() {
+	return map[int]map[string]string{
 		1: {
 			"NAME":        "void",
 			"ID":          "void",
@@ -65,12 +59,44 @@ func TestReadFile(t *testing.T) {
 			"ANSI_COLOR":  "",
 		},
 	}
+}
 
-	for test := 1; test <= len(expectedResults); test++ {
+func TestReadNoFile(t *testing.T) {
+	_, err := ReadFile("test/nosuchfile")
+	if err == nil {
+		t.Errorf("Read() on non-existant file returned nil, should not be nil")
+	}
+}
+
+func TestReadFile(t *testing.T) {
+
+	for test := 1; test <= len(expectedResults()); test++ {
 		filename := "test/os-release." + strconv.Itoa(test)
 		osrelease, err := ReadFile(filename)
 		if err != nil {
 			t.Fatalf("Error reading test file '%v': %v", filename, err)
+		} else {
+			for key, value := range expectedResults[test] {
+				if osrelease[key] != value {
+					t.Errorf("In file 'test/os-release.%v', Read() returned '%v' = '%v', should be '%v'", test, key, osrelease[key], value)
+				}
+			}
+		}
+	}
+}
+
+func TestReadString(t *testing.T) {
+	for test := 1; test <= len(expectedResults()); test++ {
+		filename := "test/os-release." + strconv.Itoa(test)
+		bytes, err := ioutil.ReadFile(filename)
+		if err != nil {
+			t.Fatalf("Error reading test file '%v': %v", filename, err)
+		}
+
+		osrelease, err := ReadString(string(bytes))
+
+		if err != nil {
+			t.Fatalf("Error parsing content of '%v': %v", filename, err)
 		} else {
 			for key, value := range expectedResults[test] {
 				if osrelease[key] != value {
